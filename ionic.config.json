@@ -1,0 +1,7 @@
+{
+  "name": "proposiciones-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
