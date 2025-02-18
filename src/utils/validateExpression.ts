@@ -68,6 +68,27 @@ export const validateExpression = (expression: string): string | null => {
       return "No se permite que una variable niegue a otra directamente (ejemplo: P~Q).";
     }
   }
+  // No permitir que una variable sea seguida inmediatamente de un agrupador de apertura (ej: P( o P[)
+  for (let i = 0; i < expr.length - 1; i++) {
+    if (/[A-Z]/.test(expr[i]) && (expr[i + 1] === "(" || expr[i + 1] === "[")) {
+      return "Si 𝑝 representa una proposición, no puede aplicarse a otra proposición de la forma 𝑝(𝑥), porque las proposiciones son valores de verdad (V o F) y no funciones.";
+    }
+  }
+
+  // Definir los operadores binarios (excluimos '~' que es unario)
+  const binaryOperators = ["∧", "∨", "⊻", "→", "↔"];
+  
+  // No permitir que la expresión comience con un operador binario
+  if (binaryOperators.includes(expr[0])) {
+    return "La expresión no puede comenzar con un operador binario.";
+  }
+  
+  // No permitir que un agrupador de apertura sea seguido inmediatamente de un operador binario
+  for (let i = 0; i < expr.length - 1; i++) {
+    if ((expr[i] === "(" || expr[i] === "[") && binaryOperators.includes(expr[i + 1])) {
+      return "No se permite que un agrupador se siga inmediatamente de un operador binario.";
+    }
+  }
   
   // No permitir agrupadores vacíos: "()" o "[]"
   if (/\(\)/.test(expr) || /\[\]/.test(expr)) {
