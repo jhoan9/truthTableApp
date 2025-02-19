@@ -20,9 +20,10 @@ export const validateExpression = (expression: string): string | null => {
     return "La expresión no puede terminar con un operador.";
   }
   
+  const operatorsAcceptNegation = ["∧", "∨", "⊻", "→", "↔"];
   // No permitir dos operadores consecutivos
   for (let i = 0; i < expr.length - 1; i++) {
-    if (operators.includes(expr[i]) && operators.includes(expr[i + 1])) {
+    if (operatorsAcceptNegation.includes(expr[i]) && operatorsAcceptNegation.includes(expr[i + 1])) {
       return "No se permiten dos operadores consecutivos.";
     }
   }
@@ -55,10 +56,11 @@ export const validateExpression = (expression: string): string | null => {
       if (i === expr.length - 1) {
         return "El símbolo de negación '~' debe estar seguido de una variable o agrupador.";
       }
-      const next = expr[i + 1];
+      /*const next = expr[i + 1];
+      console.log(next);
       if (!/[A-Z([]/.test(next)) {
         return "El símbolo de negación '~' debe estar seguido de una variable o agrupador.";
-      }
+      }*/
     }
   }
   
