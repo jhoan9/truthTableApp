@@ -69,6 +69,7 @@ const evaluateExpression = (expression: string, values: Record<string, boolean>)
         const resultOperation: boolean = Function('"use strict";return (' + operation + ')')();
         return resultOperation;
     } catch (error) {
+        throw new Error("Error en Sintaxys");
         console.error("Error evaluating expression:", error);
         return false;
     }
