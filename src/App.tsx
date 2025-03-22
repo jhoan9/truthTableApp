@@ -41,7 +41,8 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import Calculator from './pages/Calculator';
+import Calculator from './pages/TablaVerdad/Calculator';
+import Binario from './pages/Binarios/CalculateBinary';
 
 setupIonicReact();
 
@@ -53,6 +54,9 @@ const App: React.FC = () => (
           <Route path="/calculator">
             <Calculator />
           </Route>
+          <Route path="/binario">
+            <Binario />
+          </Route>
           <Route exact path="/">
             <Redirect to="/calculator" />
           </Route>
@@ -60,7 +64,11 @@ const App: React.FC = () => (
         <IonTabBar slot="bottom">
           <IonTabButton tab="calculator" href="/calculator">
             <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Calculator</IonLabel>
+            <IonLabel>Tabla Verdad</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="binario" href="/binario">
+            <IonIcon aria-hidden="true" icon={square} />
+            <IonLabel>Calcular Binario</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

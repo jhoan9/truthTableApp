@@ -13,7 +13,7 @@ import {
   IonToolbar,
   IonAlert,
 } from "@ionic/react";
-import { generateTruthTable } from "../utils/TruthTableGenerator";
+import { generateTruthTable } from "../../utils/TruthTableGenerator";
 
 const Calculator: React.FC = () => {
   const [expression, setExpression] = useState("");
