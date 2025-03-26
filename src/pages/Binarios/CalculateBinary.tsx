@@ -24,6 +24,7 @@ const CalculateBinary: React.FC = () => {
     const [activeInput, setActiveInput] = useState<"input1" | "input2">("input1");
     const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
     const [isEditable, setIsEditable] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleOperation = (operation: string) => {
         if (!binaryInput1) return; // Solo permitir seleccionar operación si el primer input tiene un valor
@@ -38,29 +39,40 @@ const CalculateBinary: React.FC = () => {
     };
 
     const calculateResult = () => {
+        setErrorMessage(null); // Limpiar mensajes de error antes de calcular
+
         const num1 = parseInt(binaryInput1, 2) || 0;
         const num2 = parseInt(binaryInput2, 2) || 0;
         let result = 0;
 
-        switch (selectedOperation) {
-            case "add":
-                result = num1 + num2;
-                break;
-            case "subtract":
-                result = num1 - num2;
-                break;
-            case "multiply":
-                result = num1 * num2;
-                break;
-            case "divide":
-                result = num2 !== 0 ? Math.floor(num1 / num2) : 0;
-                break;
-            default:
-                return;
-        }
+        try {
+            switch (selectedOperation) {
+                case "add":
+                    result = num1 + num2;
+                    break;
+                case "subtract":
+                    result = num1 - num2;
+                    break;
+                case "multiply":
+                    result = num1 * num2;
+                    break;
+                case "divide":
+                    if (num2 === 0) {
+                        throw new Error("No se puede dividir entre cero.");
+                    }
+                    result = Math.floor(num1 / num2);
+                    break;
+                default:
+                    return;
+            }
 
-        setResultDecimal(result.toString());
-        setResultBinary(result.toString(2));
+            setResultDecimal(result.toString());
+            setResultBinary(result.toString(2));
+        } catch (error: any) {
+            setErrorMessage(error.message);
+            setResultDecimal("0");
+            setResultBinary("0");
+        }
     };
 
     const handleArrowUp = () => {
@@ -95,6 +107,7 @@ const CalculateBinary: React.FC = () => {
         setResultBinary("0");
         setResultDecimal("0");
         setSelectedOperation(null);
+        setErrorMessage(null);
     };
 
     return (
@@ -149,6 +162,14 @@ const CalculateBinary: React.FC = () => {
                         <IonCol><IonButton expand="full" onClick={calculateResult}>=</IonButton></IonCol>
                     </IonRow>
                 </IonGrid>
+
+                {errorMessage && (
+                    <IonCard color="danger">
+                        <IonCardContent>
+                            <p>{errorMessage}</p>
+                        </IonCardContent>
+                    </IonCard>
+                )}
 
                 <IonCard>
                     <IonCardContent>
